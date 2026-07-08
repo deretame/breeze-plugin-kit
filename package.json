@@ -1,0 +1,27 @@
+{
+  "name": "breeze-plugin-kit",
+  "version": "0.3.0",
+  "description": "Breeze 插件开发工具包：运行时 API 类型声明与常用工具函数",
+  "type": "module",
+  "packageManager": "pnpm@11.5.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsx build.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "tsx": "^4.23.0",
+    "typescript": "6.0.3"
+  }
+}
