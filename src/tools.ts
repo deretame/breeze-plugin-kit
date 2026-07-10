@@ -96,6 +96,7 @@ interface ToastOptions {
 
 export const flutterTools = {
   getAppVersion: () => bridge.call("dart.getAppVersion") as Promise<string>,
+  getLocaleInfo: () => bridge.call("dart.getLocaleInfo") as Promise<string>,
   showToast: (options: ToastOptions) => {
     return bridge.call(
       "flutter.showToast",
