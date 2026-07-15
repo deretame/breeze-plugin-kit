@@ -11,7 +11,10 @@ export * from "./native.js";
 export * from "./runtime.js";
 export * from "./type.js";
 
-// breeze-html 通过全局声明暴露，不额外导出具体类型。
+// breeze-html / Temporal / 时间向 Intl 通过全局声明暴露，不额外导出具体类型。
+/// <reference path="./breeze-html.d.ts" />
+/// <reference path="./intl.d.ts" />
+/// <reference path="./temporal.d.ts" />
 export type {
   BreezeApi,
   BreezeDocument,

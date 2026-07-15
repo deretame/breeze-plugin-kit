@@ -6,6 +6,8 @@
  */
 
 /// <reference path="./breeze-html.d.ts" />
+/// <reference path="./intl.d.ts" />
+/// <reference path="./temporal.d.ts" />
 
 import type { Base64Api } from "./base64.js";
 import type { BridgeApi } from "./bridge.js";
@@ -33,6 +35,13 @@ export interface RuntimeApiSet {
   /** @deprecated use {@link crypto} */
   nodeCryptoCompat?: CryptoApi;
   uuidv4: () => string;
+  /** Temporal API（由运行时 `js/70_temporal.js` 注入）。 */
+  Temporal?: typeof Temporal;
+  /**
+   * 时间向 Intl 子集（`js/07_intl.js` + 宿主 `intl.rs`）。
+   * 主要为 `DateTimeFormat`；无 Collator / NumberFormat。
+   */
+  Intl?: typeof Intl;
 }
 
 /**
