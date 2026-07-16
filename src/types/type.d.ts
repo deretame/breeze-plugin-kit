@@ -1,11 +1,5 @@
 export type StringMap = Record<string, unknown>;
 
-export type ActionItem = {
-  name: string;
-  onTap: StringMap;
-  extern: StringMap;
-};
-
 export type ImageItem = {
   id: string;
   url: string;
@@ -227,57 +221,118 @@ export type CommentMutationContract = {
   };
 };
 
-export type SearchAction = {
-  type: "openSearch";
-  payload: {
-    source: string;
-    keyword: string;
-    extern: StringMap;
-  };
-};
-
-export type PluginFunctionItem = {
-  id: string;
-  title: string;
-  action:
-    | { type: "openSearch"; payload: { source: string; keyword?: string } }
-    | { type: "openWeb"; payload: { title?: string; url: string } }
-    | {
-        type: "openComicList";
-        payload: {
-          scene: {
-            title: string;
-            source: string;
-            body: {
-              type: "pluginPagedComicList";
-              request: ComicListRequest;
-            };
-            filter?: ComicListRequest;
-          };
-        };
-      }
-    | {
-        type: "openPluginFunction";
-        payload: {
-          id: string;
-          title?: string;
-          presentation?: "page" | "dialog";
-        };
-      }
-    | { type: "openCloudFavorite"; payload: { title: string } };
-};
-
 export type ComicListRequest = {
   fnPath: string;
   core?: StringMap;
   extern?: StringMap;
 };
 
+/** 打开搜索页（详情 chip / Discover / 功能页均可） */
+export type OpenSearchAction = {
+  type: "openSearch";
+  payload: {
+    source?: string;
+    keyword?: string;
+    extern?: StringMap;
+  };
+};
+
+/** 打开内置 WebView */
+export type OpenWebAction = {
+  type: "openWeb";
+  payload: {
+    title?: string;
+    url: string;
+  };
+};
+
+/** 打开漫画列表页 */
+export type OpenComicListAction = {
+  type: "openComicList";
+  payload: {
+    scene: {
+      title: string;
+      source?: string;
+      body: {
+        type: "pluginPagedComicList";
+        request: ComicListRequest;
+      };
+      filter?: ComicListRequest;
+    };
+  };
+};
+
+/** 打开插件功能页（仅 Discover / 功能页） */
+export type OpenPluginFunctionAction = {
+  type: "openPluginFunction";
+  payload: {
+    id: string;
+    title?: string;
+    presentation?: "page" | "dialog";
+    source?: string;
+  };
+};
+
+/** 打开云端收藏（仅 Discover / 功能页） */
+export type OpenCloudFavoriteAction = {
+  type: "openCloudFavorite";
+  payload: {
+    title: string;
+    source?: string;
+  };
+};
+
+/**
+ * 漫画详情页 chip / titleMeta 的 onTap。
+ * 对应 Dart `handleComicInfoAction`：openSearch / openWeb / openComicList。
+ */
+export type ComicInfoPageAction =
+  | OpenSearchAction
+  | OpenWebAction
+  | OpenComicListAction;
+
+/** 作者/创作者点击：不允许 openWeb */
+export type CreatorPageAction = OpenSearchAction | OpenComicListAction;
+
+/**
+ * Discover / 功能页动作协议。
+ * openComicInfo 仅用于功能页入口，不是详情 metadata。
+ */
+export type PluginAction =
+  | ComicInfoPageAction
+  | OpenPluginFunctionAction
+  | OpenCloudFavoriteAction
+  | {
+      type: "openComicInfo";
+      payload: {
+        comicId: string;
+        source?: string;
+      };
+    };
+
+/**
+ * @deprecated 使用 PluginAction。历史命名，payload 形状曾被错误写成 openSearch 专用。
+ */
+export type SearchAction = PluginAction;
+
+/** 详情页 metadata / titleMeta 单条 chip */
+export type ActionItem = {
+  name: string;
+  onTap: ComicInfoPageAction;
+  extern: StringMap;
+};
+
+export type PluginFunctionItem = {
+  id: string;
+  title: string;
+  action: PluginAction;
+};
+
 export type ComicListScene = {
   title: string;
   source: string;
   body: {
-    type: "pluginPagedComicList" | "pluginPagedCreatorList";
+    type: "pluginPagedComicList";
     request: ComicListRequest;
   };
   filter?: ComicListRequest;
@@ -358,7 +413,7 @@ export type FilterBundleContract = {
 
 export type FunctionPageChipItem = {
   label: string;
-  action: SearchAction | StringMap;
+  action: PluginAction;
   raw?: StringMap;
 };
 
@@ -485,7 +540,7 @@ export type ComicDetailNormal = {
       id: string;
       name: string;
       avatar: ImageItem;
-      onTap: StringMap;
+      onTap: CreatorPageAction;
       extern: StringMap;
     };
     description: string;
