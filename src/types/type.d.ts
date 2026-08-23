@@ -107,6 +107,105 @@ export type MoveFavoriteToFolderPayload = {
   extern?: StringMap;
 };
 
+/**
+ * 云端收藏工作流协议 v1.0。
+ *
+ * 插件需要导出 startFavoriteAction 和 continueFavoriteAction，具体约定见
+ * Breeze 插件开发文档中的“云端收藏工作流”。
+ */
+export type FavoriteWorkflowAction =
+  | "add"
+  | "removeAll"
+  | "removeFromTarget"
+  | "move";
+
+export type FavoriteWorkflowContext = {
+  target?: {
+    id?: string;
+    name?: string;
+  };
+};
+
+export type FavoriteWorkflowStartPayload = {
+  comicId: string;
+  action: FavoriteWorkflowAction;
+  currentFavorite?: boolean;
+  context?: FavoriteWorkflowContext;
+  extern?: StringMap;
+};
+
+export type FavoriteWorkflowContinuePayload = {
+  comicId: string;
+  action: FavoriteWorkflowAction;
+  continuationToken: string;
+  input: FavoriteWorkflowInteraction;
+  extern?: StringMap;
+};
+
+export type FavoriteWorkflowOption = {
+  id: string;
+  label: string;
+  description?: string;
+  selected?: boolean;
+};
+
+export type FavoriteWorkflowField = {
+  key: string;
+  type:
+    | "text"
+    | "password"
+    | "number"
+    | "switch"
+    | "confirm"
+    | "choice"
+    | "multiChoice";
+  label: string;
+  description?: string;
+  placeholder?: string;
+  required?: boolean;
+  defaultValue?: unknown;
+  options?: FavoriteWorkflowOption[];
+};
+
+export type FavoriteWorkflowInput = {
+  type: "select" | "text" | "confirm" | "form";
+  key?: string;
+  title?: string;
+  description?: string;
+  required?: boolean;
+  selection?: "single" | "multiple";
+  options?: FavoriteWorkflowOption[];
+  allowCreate?: boolean;
+  createField?: FavoriteWorkflowField;
+  fields?: FavoriteWorkflowField[];
+};
+
+export type FavoriteWorkflowInteraction = {
+  cancelled?: boolean;
+  key?: string;
+  value?: unknown;
+  created?: string;
+  values?: StringMap;
+};
+
+export type FavoriteWorkflowResult = {
+  status: "completed" | "awaitingInput" | "partial" | "failed" | "cancelled";
+  favorited?: boolean;
+  committed?: boolean;
+  message?: string;
+  errorCode?: string;
+  continuationToken?: string;
+  input?: FavoriteWorkflowInput;
+};
+
+export type StartFavoriteAction = (
+  payload: FavoriteWorkflowStartPayload,
+) => Promise<FavoriteWorkflowResult>;
+
+export type ContinueFavoriteAction = (
+  payload: FavoriteWorkflowContinuePayload,
+) => Promise<FavoriteWorkflowResult>;
+
 export type UserInfoBundleContract = {
   source: string;
   scheme: {
