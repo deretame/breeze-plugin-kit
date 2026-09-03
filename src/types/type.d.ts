@@ -395,7 +395,6 @@ export type CreatorPageAction = OpenSearchAction | OpenComicListAction;
 
 /**
  * Discover / 功能页动作协议。
- * openComicInfo 仅用于功能页入口，不是详情 metadata。
  */
 export type PluginAction =
   | ComicInfoPageAction
@@ -406,6 +405,7 @@ export type PluginAction =
       payload: {
         comicId: string;
         source?: string;
+        extern: StringMap;
       };
     };
 
