@@ -104,3 +104,39 @@ export const flutterTools = {
     ) as Promise<string>;
   },
 };
+
+/** 图片裁剪区域。坐标原点位于图片左上角。 */
+export interface ImageCropRegion {
+  number: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Rust bridge 返回的 WebP 图片数据。 */
+export interface CroppedImage {
+  number: number;
+  imgData: number[];
+}
+
+type CroppedImageResult = Omit<CroppedImage, "imgData"> & {
+  imgData: Uint8Array;
+};
+
+export const pictureTools = {
+  cropImageByRegions: (
+    imageData: Uint8Array | ArrayBuffer | ArrayBufferView | number[],
+    regions: ImageCropRegion[],
+  ): Promise<CroppedImageResult[]> =>
+    (
+      bridge.call("image.crop_by_regions", imageData, regions) as Promise<
+        CroppedImage[]
+      >
+    ).then((items) =>
+      items.map((item) => ({
+        ...item,
+        imgData: Uint8Array.from(item.imgData),
+      })),
+    ),
+};
