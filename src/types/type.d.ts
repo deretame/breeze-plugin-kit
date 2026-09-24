@@ -665,6 +665,14 @@ export type ComicDetailNormal = {
   allowLike: boolean;
   allowCollected: boolean;
   allowDownload: boolean;
+  /** 对应 allow 开关为 false 时展示给用户的原因，为空则 App 显示默认文案「该插件暂不支持此功能」 */
+  allowCommentsReason?: string;
+  /** 对应 allow 开关为 false 时展示给用户的原因，为空则 App 显示默认文案「该插件暂不支持此功能」 */
+  allowLikeReason?: string;
+  /** 对应 allow 开关为 false 时展示给用户的原因，为空则 App 显示默认文案「该插件暂不支持此功能」 */
+  allowCollectedReason?: string;
+  /** 对应 allow 开关为 false 时展示给用户的原因，为空则 App 显示默认文案「该插件暂不支持此功能」 */
+  allowDownloadReason?: string;
   extern: StringMap;
 };
 
