@@ -423,7 +423,7 @@ export type SearchAction = PluginAction;
 /** 详情页 metadata / titleMeta 单条 chip */
 export type ActionItem = {
   name: string;
-  onTap: ComicInfoPageAction;
+  onTap?: ComicInfoPageAction | null;
   extern: StringMap;
 };
 
@@ -645,7 +645,7 @@ export type ComicDetailNormal = {
       id: string;
       name: string;
       avatar: ImageItem;
-      onTap?: CreatorPageAction;
+      onTap?: CreatorPageAction | null;
       extern: StringMap;
     };
     description: string;
