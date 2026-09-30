@@ -1,6 +1,6 @@
 {
   "name": "breeze-plugin-kit",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Breeze 插件开发工具包：运行时 API 类型声明与常用工具函数",
   "type": "module",
   "packageManager": "pnpm@11.5.0",

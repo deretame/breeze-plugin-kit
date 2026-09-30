@@ -645,7 +645,7 @@ export type ComicDetailNormal = {
       id: string;
       name: string;
       avatar: ImageItem;
-      onTap: CreatorPageAction;
+      onTap?: CreatorPageAction;
       extern: StringMap;
     };
     description: string;
