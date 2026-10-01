@@ -825,6 +825,10 @@ export type ReadSnapshotContract = {
   data: ReadSnapshotData;
 };
 
+export type DownloadConcurrencyResult = {
+  concurrency: number;
+};
+
 export type FieldKind =
   | "text"
   | "password"
@@ -867,8 +871,54 @@ export type SettingsBundleContract = {
   };
   data: {
     canShowUserInfo: boolean;
+    /** 声明支持登录页登录，设置页显示登录入口。 */
+    canLogin?: boolean;
     values: StringMap;
   };
+};
+
+export type LoginFieldKind = "text" | "password" | "multiline";
+
+export type LoginField = {
+  key: string;
+  kind?: LoginFieldKind;
+  label?: string;
+  required?: boolean;
+  placeholder?: string;
+  help?: string;
+};
+
+export type LoginBundleScheme = {
+  version: "1.0.0";
+  type: "login";
+  title?: string;
+  fields: LoginField[];
+  action: {
+    fnPath: string;
+    submitText?: string;
+    label?: string;
+  };
+};
+
+export type LoginBundleContract = {
+  source: string;
+  scheme: LoginBundleScheme;
+  data?: {
+    values?: StringMap;
+  } & StringMap;
+};
+
+/** 登录提交入参：表单值在 core.values。 */
+export type LoginSubmitPayload = {
+  values?: StringMap;
+  extern?: StringMap;
+} & StringMap;
+
+/** need-login 错误只带身份与文案；宿主跳转后统一调 getLoginBundle 现取表单。 */
+export type UnauthorizedErrorPayload = {
+  type: "unauthorized";
+  source: string;
+  message: string;
 };
 
 export type CapabilityAction = {

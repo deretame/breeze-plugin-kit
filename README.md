@@ -16,10 +16,10 @@ pnpm add breeze-plugin-kit
 - **工具函数**：
   - `cache` — 进程内缓存
   - `pluginConfig` — 持久化配置存储
+  - `authConfig` — 带编解码的持久化配置读写，登录 helper（`readLoginValues` / `buildLoginBundle` / `buildUnauthorizedError`）
   - `runtime` — 运行时工具（gc、任务取消检查等）
   - `opencc` — 简繁转换
   - `flutterTools` — Flutter 宿主交互（获取版本、Toast 等）
-- **运行时 API 封装**：`hostRuntime`、`getApi`、`requireApi`、`requireCryptoLike` 等。
 
 ## 使用示例
 

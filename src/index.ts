@@ -10,5 +10,8 @@ export * from "./runtime-api.js";
 // 插件常用工具函数（cache、pluginConfig、runtime、opencc、flutterTools）
 export * from "./tools.js";
 
+// 登录表单与 need-login 错误 helper（getLoginBundle / unauthorized）
+export * from "./auth.js";
+
 // Breeze 运行时类型声明统一入口
 export type * from "./types/index.js";
