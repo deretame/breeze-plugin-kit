@@ -424,6 +424,8 @@ export type SearchAction = PluginAction;
 export type ActionItem = {
   name: string;
   onTap?: ComicInfoPageAction | null;
+  /** 长按复制的文本。缺省或 null 时复制 name。 */
+  onLongPress?: string | null;
   extern: StringMap;
 };
 
