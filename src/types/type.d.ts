@@ -916,6 +916,18 @@ export type LoginSubmitPayload = {
   extern?: StringMap;
 } & StringMap;
 
+/**
+ * 登录提交返回值：`message` 为登录成功提示，缺省/null/空白时宿主用默认文案。
+ * 旧插件只返回 `{ source, data }` 也兼容。
+ */
+export type LoginSubmitResult = {
+  source: string;
+  message?: string | null;
+  data?: {
+    message?: string | null;
+  } & StringMap;
+} & StringMap;
+
 /** need-login 错误只带身份与文案；宿主跳转后统一调 getLoginBundle 现取表单。 */
 export type UnauthorizedErrorPayload = {
   type: "unauthorized";
