@@ -615,11 +615,6 @@ export type InfoContract = {
   name: string;
   uuid: string;
   iconUrl: string;
-  creator: {
-    name: string;
-    describe: string;
-    coverUrl?: string;
-  };
   describe: string;
   version: string;
   home?: string;
@@ -629,6 +624,21 @@ export type InfoContract = {
 };
 
 export type PluginInfo = InfoContract;
+
+/**
+ * 插件详情（新详情页）返回体：`describe` 支持 md 渲染。
+ */
+export type PluginDetailContract = {
+  source: string;
+  data: {
+    creator?: {
+      name: string;
+      describe?: string | null;
+      iconUrl?: string | null;
+    } | null;
+    describe: string;
+  };
+};
 
 export type ChapterPage = {
   id: string;
@@ -875,6 +885,12 @@ export type SettingsBundleContract = {
     canShowUserInfo: boolean;
     /** 声明支持登录页登录，设置页显示登录入口。 */
     canLogin?: boolean;
+    /** 登录入口标题，缺省用宿主默认「账号登录」。 */
+    loginTitle?: string | null;
+    /** 登录入口副标题，缺省用宿主默认「前往登录」。 */
+    loginSubtitle?: string | null;
+    /** 声明支持新详情页，设置页显示详情入口，按需调 `getPluginDetail`。 */
+    canShowDetail?: boolean;
     values: StringMap;
   };
 };
