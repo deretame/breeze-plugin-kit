@@ -713,7 +713,7 @@ export type RecommendItem = {
   viewsCount: number;
   updatedAt: string;
   cover: ImageItem;
-  metadata: ActionItem[];
+  metadata: MetadataListItem[];
   raw: StringMap;
   extern: StringMap;
 };
