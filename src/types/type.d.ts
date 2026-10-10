@@ -653,13 +653,13 @@ export type ComicDetailNormal = {
     id: string;
     title: string;
     titleMeta: ActionItem[];
-    creator: {
+    creator?: {
       id: string;
       name: string;
       avatar: ImageItem;
       onTap?: CreatorPageAction | null;
       extern: StringMap;
-    };
+    } | null;
     description: string;
     cover: ImageItem;
     metadata: MetadataListItem[];
@@ -895,7 +895,20 @@ export type SettingsBundleContract = {
   };
 };
 
-export type LoginFieldKind = "text" | "password" | "multiline";
+export type LoginFieldKind = "text" | "password" | "multiline" | "captcha-image";
+
+/**
+ * 图形验证码字段配置：宿主渲染图片+文本输入框。
+ * - fetchFnPath：取图函数，返回 `{ imageBase64: string; mimeType?: string }`
+ *   （imageBase64 为 PNG/JPEG 等图片字节的 base64；mimeType 缺省 image/png）。
+ * - 取图与提交共用插件 JS 侧会话：服务端把验证码状态绑在
+ *   取图响应的 Set-Cookie 里，插件需自行保管并在提交时带回。
+ * - 提交失败（验证码错误）时宿主会自动刷新一张新图。
+ */
+export type LoginCaptchaConfig = {
+  fetchFnPath: string;
+  refreshText?: string;
+};
 
 export type LoginField = {
   key: string;
@@ -904,6 +917,7 @@ export type LoginField = {
   required?: boolean;
   placeholder?: string;
   help?: string;
+  captcha?: LoginCaptchaConfig;
 };
 
 export type LoginBundleScheme = {
