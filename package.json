@@ -10,6 +10,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
     }
   },
   "files": [
@@ -17,7 +21,8 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsx build.ts"
+    "build": "tsx build.ts",
+    "test:node": "pnpm build && node tests/node-polyfill.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.0.1",
