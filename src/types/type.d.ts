@@ -88,17 +88,29 @@ export type ToggleLikeResult = {
   liked: boolean;
 };
 
+/**
+ * @deprecated 旧版收藏协议，仅供兼容、不再维护，随时可能移除。
+ * 新插件请实现云端收藏工作流（{@link StartFavoriteAction} / {@link ContinueFavoriteAction}）。
+ */
 export type ToggleFavoritePayload = {
   comicId?: string;
   currentFavorite?: boolean;
   extern?: StringMap;
 };
 
+/**
+ * @deprecated 旧版收藏协议，仅供兼容、不再维护，随时可能移除。
+ * 新插件请实现云端收藏工作流（{@link StartFavoriteAction} / {@link ContinueFavoriteAction}）。
+ */
 export type ToggleFavoriteResult = {
   favorited: boolean;
   nextStep: "none" | "selectFolder";
 };
 
+/**
+ * @deprecated 旧版收藏协议，仅供兼容、不再维护，随时可能移除。
+ * 新插件请实现云端收藏工作流（{@link StartFavoriteAction} / {@link ContinueFavoriteAction}）。
+ */
 export type ListFavoriteFoldersResult = {
   items: Array<{
     id: string;
@@ -106,6 +118,10 @@ export type ListFavoriteFoldersResult = {
   }>;
 };
 
+/**
+ * @deprecated 旧版收藏协议，仅供兼容、不再维护，随时可能移除。
+ * 新插件请实现云端收藏工作流（{@link StartFavoriteAction} / {@link ContinueFavoriteAction}）。
+ */
 export type MoveFavoriteToFolderPayload = {
   comicId?: string;
   folderId?: string;
