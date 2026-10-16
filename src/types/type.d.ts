@@ -716,6 +716,14 @@ export type ChapterSummary = {
   storageChapterId: string;
   name: string;
   order: number;
+  /**
+   * 章节视觉分组标题（如"连载" / "番外" / "单行本"）。
+   *
+   * 缺省 / null / 空白 = 不分组，宿主走单列扁平显示。
+   * 同组章节填相同值；组顺序按章节在 `eps` 中的首次出现顺序推导，不另存顺序 key。
+   * 行标题显示时会去掉 `"{groupTitle}—"` 前缀（组头已说明组），存储的 `name` 不动。
+   */
+  groupTitle?: string | null;
   extern: StringMap;
 };
 
