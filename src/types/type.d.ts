@@ -790,7 +790,6 @@ export type ChapterSummary = {
    *
    * 缺省 / null / 空白 = 不分组，宿主走单列扁平显示。
    * 同组章节填相同值；组顺序按章节在 `eps` 中的首次出现顺序推导，不另存顺序 key。
-   * 行标题显示时会去掉 `"{groupTitle}—"` 前缀（组头已说明组），存储的 `name` 不动。
    * `name` 只填裸标题（如"第1话"），不要自己拼分组前缀；分组信息只走本字段。
    */
   groupTitle?: string | null;
@@ -989,7 +988,11 @@ export type SettingsBundleContract = {
   };
 };
 
-export type LoginFieldKind = "text" | "password" | "multiline" | "captcha-image";
+export type LoginFieldKind =
+  | "text"
+  | "password"
+  | "multiline"
+  | "captcha-image";
 
 /**
  * 图形验证码字段配置：宿主渲染图片+文本输入框。
