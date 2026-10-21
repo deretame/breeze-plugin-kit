@@ -705,6 +705,10 @@ export type InfoContract = {
   home?: string;
   updateUrl?: string;
   npmName?: string;
+  /** 有插件首页（getPluginHomePagesBundle），宿主第一页显示该插件。 */
+  haveHome?: boolean;
+  /** 有云端收藏（getPluginCloudFavoritePagesBundle），宿主第二页显示该插件。 */
+  haveCloudFavorite?: boolean;
   function: PluginFunctionItem[];
 };
 
