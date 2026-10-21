@@ -394,7 +394,10 @@ export type OpenPluginFunctionAction = {
   };
 };
 
-/** 打开云端收藏（仅 Discover / 功能页） */
+/**
+ * 打开云端收藏（仅 Discover / 功能页）。
+ * @deprecated 不再维护仅为兼容保留；新插件如需收藏入口请用 openComicList 自建列表。
+ */
 export type OpenCloudFavoriteAction = {
   type: "openCloudFavorite";
   payload: {
@@ -403,6 +406,72 @@ export type OpenCloudFavoriteAction = {
   };
 };
 
+/**
+ * scene 载荷的 tab：分页漫画列表走 ComicListPage 渲染。
+ */
+export type PluginHomeSceneTab = {
+  id: string;
+  title: string;
+  scene: ComicListScene;
+  page?: never;
+  header?: {
+    actions: PluginAction[];
+  };
+};
+
+/**
+ * page 载荷的 tab：功能页走 FunctionPageContract 的 scheme + data 渲染。
+ */
+export type PluginHomePageTab = {
+  id: string;
+  title: string;
+  page: FunctionPageContract;
+  scene?: never;
+  header?: {
+    actions: PluginAction[];
+  };
+};
+
+/**
+ * 插件首页 / 云端收藏 bundle 的单个 tab。双字段二选一，
+ * header.actions 只能引用 getInfo functions 已定义的功能，Dart 统一渲染。
+ */
+export type PluginHomeTab = PluginHomeSceneTab | PluginHomePageTab;
+
+/** 第一页 getPluginHomePagesBundle 入参：空参 core + extern.source。 */
+export type GetPluginHomePagesBundlePayload = {
+  core?: StringMap;
+  extern?: StringMap;
+  [key: string]: unknown;
+};
+
+/** 第一页 getPluginHomePagesBundle 返回体：TabView 一次返回多个 tab。 */
+export type PluginHomePagesBundleContract = {
+  source: string;
+  scheme: {
+    version: "1.0.0";
+    type: "homePagesBundle";
+  };
+  data: {
+    tabs: PluginHomeTab[];
+  };
+};
+
+/** 第二页 getPluginCloudFavoritePagesBundle 入参：同首页，空参 core + extern.source。 */
+export type GetPluginCloudFavoritePagesBundlePayload =
+  GetPluginHomePagesBundlePayload;
+
+/** 第二页 getPluginCloudFavoritePagesBundle 返回体：结构与首页对称。 */
+export type PluginCloudFavoritePagesBundleContract = {
+  source: string;
+  scheme: {
+    version: "1.0.0";
+    type: "cloudFavoritePagesBundle";
+  };
+  data: {
+    tabs: PluginHomeTab[];
+  };
+};
 /**
  * 漫画详情页 chip / titleMeta 的 onTap。
  * 对应 Dart `handleComicInfoAction`：openSearch / openWeb / openComicList。
@@ -722,6 +791,7 @@ export type ChapterSummary = {
    * 缺省 / null / 空白 = 不分组，宿主走单列扁平显示。
    * 同组章节填相同值；组顺序按章节在 `eps` 中的首次出现顺序推导，不另存顺序 key。
    * 行标题显示时会去掉 `"{groupTitle}—"` 前缀（组头已说明组），存储的 `name` 不动。
+   * `name` 只填裸标题（如"第1话"），不要自己拼分组前缀；分组信息只走本字段。
    */
   groupTitle?: string | null;
   extern: StringMap;
