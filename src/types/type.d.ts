@@ -996,7 +996,8 @@ export type LoginFieldKind =
   | "text"
   | "password"
   | "multiline"
-  | "captcha-image";
+  | "captcha-image"
+  | "slider-captcha";
 
 /**
  * 图形验证码字段配置：宿主渲染图片+文本输入框。
@@ -1011,6 +1012,26 @@ export type LoginCaptchaConfig = {
   refreshText?: string;
 };
 
+/**
+ * 拼图滑块验证码字段配置：登录页不渲染该字段，点登录后宿主自动弹纯 Flutter
+ * 拼图弹窗（无 WebView）。取题时宿主经 `core.values` 透传当前表单值
+ * （账号绑定的站用它取题；不绑定的站忽略）。
+ * - createFnPath：取题函数，返回 `{ token, bg, piece, y, w, h, s }`
+ *   （bg/piece 为带 `data:image/...;base64,` 前缀的 dataURL；w/h 为底图
+ *   逻辑尺寸，s 为拼块边长，y 为拼块在底图上的垂直位置）。
+ * - verifyFnPath：验题函数，入参 `{ token, x, track }`
+ *   （x 为拼块左边缘在底图坐标系下的位置；track 为 `[t, x, y][]`
+ *   拖动轨迹，t 为相对毫秒，x/y 为相对位移），返回 `{ pass }`
+ *   一次性通行证；宿主把 pass 填入该字段值随登录表单提交。
+ * - 取题/验题/登录共用插件 JS 侧会话（如需 Cookie 由插件自行保管带回）。
+ * - verify 失败宿主自动换一题；登录提交失败下次提交重新弹拼图。
+ */
+export type LoginSliderConfig = {
+  createFnPath: string;
+  verifyFnPath: string;
+  refreshText?: string;
+};
+
 export type LoginField = {
   key: string;
   kind?: LoginFieldKind;
@@ -1019,6 +1040,7 @@ export type LoginField = {
   placeholder?: string;
   help?: string;
   captcha?: LoginCaptchaConfig;
+  slider?: LoginSliderConfig;
 };
 
 export type LoginBundleScheme = {
