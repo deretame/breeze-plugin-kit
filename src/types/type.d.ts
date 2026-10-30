@@ -40,6 +40,13 @@ export type SearchComicPayload = {
   keyword?: string;
   page?: number;
   extern?: StringMap;
+  /**
+   * 搜索书签跳转回放标志（宿主在 payload 顶层透传，绝不进 extern）。
+   * 为 true 时插件应直抓 `extern.currentUrl`（书签记录的当前页实际 URL），
+   * 而不是按 `page` 重新拼 URL。平时翻页/首屏时为 undefined/false。
+   * 只有 URL 游标式分页需要处理；纯页码式（`page=N` 稳定）可忽略。
+   */
+  isSearchAggregate?: boolean;
 };
 
 export type ComicDetailPayload = {
