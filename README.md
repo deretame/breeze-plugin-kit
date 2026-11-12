@@ -20,6 +20,8 @@ pnpm add breeze-plugin-kit
   - `runtime` — 运行时工具（gc、任务取消检查等）
   - `opencc` — 简繁转换
   - `flutterTools` — Flutter 宿主交互（获取版本、Toast 等）
+  - `setFrontHosts` / `getFrontHosts` / `clearFrontHosts` / `probeFrontHosts` / `rankFrontHosts` — 域名前置（IP 直连）与延迟探测
+  - `setEchHosts` / `getEchHosts` / `clearEchHosts` — ECH（加密 SNI），适合必须看 SNI 的 Cloudflare 站点
 
 ## 使用示例
 
@@ -34,6 +36,28 @@ async function init() {
   await pluginConfig.save("site", "example");
 }
 ```
+
+域名前置（IP 直连）与延迟探测：
+
+```ts
+import {
+  pickBestFrontIps,
+  probeFrontHosts,
+  setFrontHosts,
+} from "breeze-plugin-kit";
+
+setFrontHosts({ "e-hentai.org": ["172.66.132.196"] });
+
+const report = await probeFrontHosts({
+  host: "e-hentai.org",
+  ips: ["172.66.132.196", "172.66.140.62"],
+  samples: 2,
+});
+const best = pickBestFrontIps(report);
+if (best.length > 0) setFrontHosts({ "e-hentai.org": best });
+```
+
+`fetch` 响应上的 `res.hostMeta` 提供本次请求的实际 IP 与分段耗时（`ip` / `host` / `peerIp` / `bytes` / `ttfbMs` / `bodyMs`），可用于被动测速。
 
 ## 开发
 

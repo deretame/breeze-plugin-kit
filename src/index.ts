@@ -13,5 +13,8 @@ export * from "./tools.js";
 // 登录表单与 need-login 错误 helper（getLoginBundle / unauthorized）
 export * from "./auth.js";
 
+// 域名前置（IP 直连）与延迟探测封装（setFrontHosts / probeFrontHosts / pickBestFrontIps）
+export * from "./fronting.js";
+
 // Breeze 运行时类型声明统一入口
 export type * from "./types/index.js";

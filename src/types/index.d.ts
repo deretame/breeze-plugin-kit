@@ -6,6 +6,7 @@ export * from "./base64.js";
 export * from "./bridge.js";
 export * from "./buffer.js";
 export * from "./crypto.js";
+export * from "./fronting.js";
 export * from "./fs.js";
 export * from "./native.js";
 export * from "./runtime.js";

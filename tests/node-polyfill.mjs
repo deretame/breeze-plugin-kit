@@ -1,5 +1,14 @@
 import "breeze-plugin-kit/node";
-import { cache, flutterTools, pluginConfig } from "breeze-plugin-kit";
+import {
+  cache,
+  clearFrontHosts,
+  flutterTools,
+  getFrontHosts,
+  pickBestFrontIps,
+  pluginConfig,
+  probeFrontHosts,
+  setFrontHosts,
+} from "breeze-plugin-kit";
 const bridge = globalThis.bridge;
 
 const results = [];
@@ -43,6 +52,28 @@ check(
   globalThis.bytesToBase64(new Uint8Array([104, 105])) === "aGk=",
 );
 check("web bus", typeof globalThis.__web?.bridge?.call === "function");
+
+// 域名前置：纯 Node 环境没有宿主注入，必须优雅降级而不是抛错
+check(
+  "setFrontHosts degrades",
+  setFrontHosts({ "example.com": ["1.2.3.4"] }).error === "fronting-unsupported",
+);
+check("getFrontHosts degrades", getFrontHosts().error === "fronting-unsupported");
+check("clearFrontHosts degrades", clearFrontHosts().error === "fronting-unsupported");
+const probeDegraded = await probeFrontHosts({ host: "example.com" });
+check("probeFrontHosts degrades", probeDegraded.error === "fronting-unsupported");
+check(
+  "rankFrontHosts filters",
+  pickBestFrontIps({
+    ok: true,
+    results: [
+      { ip: "a", ok: true, lossRate: 0, avgMs: 90 },
+      { ip: "b", ok: true, lossRate: 0.5, avgMs: 10 },
+      { ip: "c", ok: false, lossRate: 0, avgMs: 5 },
+      { ip: "d", ok: true, lossRate: 0, avgMs: 40 },
+    ],
+  }).join(",") === "d,a",
+);
 
 // AES-CBC roundtrip against node directly
 const key = "my2ecret782ecret";
