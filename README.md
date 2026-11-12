@@ -2,7 +2,7 @@
 
 Breeze 插件开发工具包，提供运行时 API 类型声明与常用工具函数。
 
-插件开发相关文档请参阅：https://deretame.github.io/plugin-dev-docs/
+插件开发相关文档请参阅：https://breeze-project-org.github.io/plugin-dev-docs/
 
 ## 安装
 
