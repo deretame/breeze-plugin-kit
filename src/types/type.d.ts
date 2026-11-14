@@ -585,7 +585,8 @@ export type FilterOption = {
 
 export type FilterField = {
   key: string;
-  kind: "choice";
+  /** `choice` 渲染为分组单选；`dropdown` 渲染为可展开的下拉框（children 缩进展开）。 */
+  kind: "choice" | "dropdown";
   label: string;
   options: FilterOption[];
 };
